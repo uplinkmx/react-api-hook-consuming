@@ -1,23 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Contacts from './components/contacts';
-import fetchUsers from './services/http.Services';
+import { BoxLoading } from 'react-loadingg';
+import { useAsyncHook} from './services/http.Services';
 function App() {
-
-  const[contacts,setContacts] = useState('');
-
-//  useEffect(setContacts, [fetchUsers()]);
-
-  useEffect(() => {
-    const data = fetchUsers();
-    console.log(data);
-    setContacts(data);
-  },[]);
- 
-  return (
-<>
-hola
+  const [result,loading] = useAsyncHook();
+return (
+<> 
+{ loading 
+    ?<Contacts contacts={result} />
+    :<BoxLoading />
+}
 </>
   );
 }
-
 export default App;

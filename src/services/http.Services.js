@@ -1,14 +1,23 @@
-import React from 'react';
-const fetchUsers = () =>{
-    fetch('http://jsonplaceholder.typicode.com/users')
-        .then(res => res.json())
-        .then((data) => {
-          return data
-        })
-        .catch(error => {
-return error
-        })
-      }
+import { useState, useEffect } from 'react';
 
-      export default fetchUsers;
+function useAsyncHook(){
+  const [result, setResult] = useState([]);
+  const [loading, setLoading] = useState("false");
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const response = await fetch('http://jsonplaceholder.typicode.com/users');
+        const json = await response.json();
+        setResult(json);
+        setLoading("true");
+      } catch (error) {
+        setLoading("false");
+      }
+    }
+    fetchUsers();
+  }, []);
+  return [result, loading];
+}
+
+export { useAsyncHook };
 
